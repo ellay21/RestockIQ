@@ -1,0 +1,242 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+# Project metadata
+[project]
+name = "restockiq"
+version = "0.1.0"
+description = "Cash-constrained restocking advisor for nanostore owners"
+readme = "README.md"
+license = { text = "Dual-Licensing" }
+requires-python = ">=3.11"
+keywords = ["restocking", "inventory", "nanostore", "optimization", "cash-constrained"]
+
+dependencies = [
+    # Web framework
+    "fastapi>=0.111.0",
+    "uvicorn[standard]>=0.29.0",
+    "python-multipart>=0.0.9",
+
+    # Database
+    "sqlalchemy[asyncio]>=2.0.0",
+    "alembic>=1.13.0",
+    "asyncpg>=0.29.0",
+    "psycopg2-binary>=2.9.9",
+
+    # Configuration
+    "pydantic>=2.7.0",
+    "pydantic-settings>=2.3.0",
+
+    # Optimization
+    "PuLP>=2.8.0",
+
+    # Scientific computing (demand estimation)
+    "scipy>=1.13.0",
+    "numpy>=1.26.0",
+
+    # HTTP client (outbound WERET calls)
+    "httpx>=0.27.0",
+
+    # Retry logic for external service calls
+    "tenacity>=8.3.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    # Testing
+    "pytest>=8.2.0",
+    "pytest-asyncio>=0.23.0",
+    "pytest-cov>=5.0.0",
+
+    # Linting & formatting
+    "ruff>=0.4.0",
+
+    # Type checking
+    "mypy>=1.10.0",
+    "types-psycopg2>=2.9.21",
+
+    # Dependency-rule enforcement 
+    "import-linter>=2.1.0",
+
+    # Integration testing against a real Postgres instance
+    "testcontainers[postgres]>=4.5.0",
+
+    # Property-based testing 
+    "hypothesis>=6.100.0",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/restockiq"]
+
+# pytest
+[tool.pytest.ini_options]
+testpaths = ["src", "tests"]
+pythonpath = ["src", "."]
+addopts = [
+    "--strict-markers",
+    "--tb=short",
+    "-q",
+]
+markers = [
+    "integration: tests that require Docker/Postgres — run with '-m integration' in CI",
+    "slow: tests that are computationally expensive",
+]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "session"
+
+# Coverage
+[tool.coverage.run]
+source = ["src/restockiq"]
+omit = ["*/tests/*", "*/migrations/*"]
+branch = true
+
+[tool.coverage.report]
+fail_under = 80
+show_missing = true
+skip_covered = false
+
+# Ruff (linting + formatting)
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+src = ["src"]
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes
+    "I",    # isort
+    "B",    # flake8-bugbear
+    "C4",   # flake8-comprehensions
+    "UP",   # pyupgrade
+    "N",    # pep8-naming
+    "SIM",  # flake8-simplify
+    "TCH",  # flake8-type-checking
+    "RUF",  # ruff-specific rules
+    "PT",   # flake8-pytest-style
+    "TRY",  # tryceratops
+]
+ignore = [
+    "TRY003",  # long exception messages are acceptable in domain code
+    "B008",    # function calls in default args (FastAPI Depends pattern)
+    "TC003",   # stdlib imports needed at runtime for Pydantic/FastAPI schemas
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py"           = ["ANN", "S101", "PT011"]
+"src/**/tests/**/*.py"    = ["ANN", "S101", "PT011"]
+"src/**/migrations/**"    = ["ANN", "E501"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["restockiq"]
+
+# Mypy
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+no_implicit_reexport = true
+plugins = ["pydantic.mypy"]
+exclude = ["src/restockiq/db/migrations/", ".venv"]
+
+
+[[tool.mypy.overrides]]
+module = [
+    "pulp.*",
+    "scipy.*",
+    "numpy.*",
+    "testcontainers.*",
+]
+ignore_missing_imports = true
+
+# ──────────────────────────────────────────────────────────────────────────────
+# import-linter — enforces the dependency rule.
+#
+# VIOLATIONS ARE ERRORS AND BLOCK CI. This is intentional: the contract must be
+# enforced on every commit, not caught in review after the fact.
+#
+# Contract 1: Domain core has zero I/O or framework dependencies.
+#   – domain.py, estimator.py, confidence_scorer.py, rationale_generator.py,
+#     detector.py, loss_estimator.py may not import FastAPI, SQLAlchemy, PuLP,
+#     httpx, psycopg2, or any module that is itself an adapter or ORM model.
+#
+# Contract 2: Port ABCs have no concrete adapter dependencies.
+#   – ports.py files may not import ORM models, concrete adapters, or the API.
+# ──────────────────────────────────────────────────────────────────────────────
+[tool.importlinter]
+root_packages = ["restockiq"]
+source_root = "src"
+include_external_packages = true
+
+
+[[tool.importlinter.contracts]]
+name = "Domain core has no I/O or framework dependencies"
+type = "forbidden"
+source_modules = [
+    "restockiq.shared_kernel",
+    "restockiq.merchants.domain",
+    "restockiq.signals.domain",
+    "restockiq.demand.estimator",
+    "restockiq.optimizer.domain",
+    "restockiq.recommendations.domain",
+    "restockiq.recommendations.confidence_scorer",
+    "restockiq.recommendations.rationale_generator",
+    "restockiq.stockout_analysis.detector",
+    "restockiq.stockout_analysis.loss_estimator",
+]
+forbidden_modules = [
+    # Web & HTTP frameworks
+    "fastapi",
+    "uvicorn",
+    "httpx",
+    # Database frameworks
+    "sqlalchemy",
+    "asyncpg",
+    "psycopg2",
+    "alembic",
+    # LP solver
+    "pulp",
+    # Internal adapter & infrastructure modules
+    "restockiq.merchants.orm_models",
+    "restockiq.signals.orm_models",
+    "restockiq.recommendations.orm_models",
+    "restockiq.signals.adapters",
+    "restockiq.integrations",
+    "restockiq.api",
+    "restockiq.db",
+    "restockiq.container",
+]
+
+[[tool.importlinter.contracts]]
+name = "Port ABCs have no concrete adapter dependencies"
+type = "forbidden"
+source_modules = [
+    "restockiq.signals.ports",
+    "restockiq.demand.ports",
+    "restockiq.optimizer.ports",
+    "restockiq.integrations.ports",
+]
+forbidden_modules = [
+    "fastapi",
+    "sqlalchemy",
+    "asyncpg",
+    "psycopg2",
+    "pulp",
+    "httpx",
+    "restockiq.merchants.orm_models",
+    "restockiq.signals.orm_models",
+    "restockiq.recommendations.orm_models",
+    "restockiq.signals.adapters",
+    "restockiq.integrations.weret_notifier",
+    "restockiq.integrations.weret_payment_trigger",
+    "restockiq.db",
+    "restockiq.container",
+    "restockiq.api",
+]
+
+[tool.pyright]
+include = ["src", "tests", "conftest.py"]
+extraPaths = ["src", "."]

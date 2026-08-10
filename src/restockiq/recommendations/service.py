@@ -20,7 +20,6 @@ from decimal import Decimal
 from typing import TYPE_CHECKING
 
 from restockiq.demand.estimator import DemandDistribution, estimate
-from restockiq.merchants.service import MerchantService
 from restockiq.optimizer.domain import OptimizationInput, SkuInputLine
 from restockiq.recommendations.confidence_scorer import ConfidenceScorer
 from restockiq.recommendations.domain import RestockRecommendation
@@ -31,6 +30,7 @@ from restockiq.shared_kernel.value_objects import Money, SkuCode
 
 if TYPE_CHECKING:
     from restockiq.merchants.domain import Sku
+    from restockiq.merchants.service import MerchantService
     from restockiq.optimizer.ports import SolverPort
     from restockiq.recommendations.repository import RecommendationRepository
     from restockiq.signals.domain import MerchantFinancialSignal, SkuSalesRecord

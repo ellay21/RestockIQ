@@ -87,7 +87,7 @@ class WeretAdapter(SignalSourcePort):
 
         return self._parse_payload(payload)
 
-    # Signature verification 
+    # Signature verification
 
     def _verify_signature(self, payload: dict[str, Any], signature: str | None) -> None:
         if not self._secret:

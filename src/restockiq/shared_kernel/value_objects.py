@@ -60,7 +60,7 @@ class Money:
         # Normalise currency to uppercase
         object.__setattr__(self, "currency", self.currency.upper())
 
-    #  Arithmetic 
+    #  Arithmetic
 
     def __add__(self, other: Money) -> Money:
         self._assert_same_currency(other, "add")
@@ -89,7 +89,7 @@ class Money:
             )
         return Money(amount=self.amount * decimal_factor, currency=self.currency)
 
-    # Comparison 
+    # Comparison
 
     def __lt__(self, other: Money) -> bool:
         self._assert_same_currency(other, "compare")
@@ -107,7 +107,7 @@ class Money:
         self._assert_same_currency(other, "compare")
         return self.amount >= other.amount
 
-    # Helpers 
+    # Helpers
 
     def _assert_same_currency(self, other: Money, op: str) -> None:
         if self.currency != other.currency:
@@ -171,7 +171,7 @@ class Quantity:
         return str(self.units)
 
 
-# SkuCode 
+# SkuCode
 
 
 @dataclass(frozen=True)
@@ -208,7 +208,7 @@ class SkuCode:
         return self.code
 
 
-# MerchantId 
+# MerchantId
 
 
 @dataclass(frozen=True)

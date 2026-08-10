@@ -10,7 +10,6 @@ Marked @pytest.mark.integration — requires Postgres.
 """
 from __future__ import annotations
 
-import asyncio
 import os
 from decimal import Decimal
 

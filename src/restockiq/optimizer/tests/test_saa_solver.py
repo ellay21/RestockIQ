@@ -196,7 +196,7 @@ class TestSolverPortSwappability:
         conform to the contract.
         """
         # pyrefly: ignore [missing-import]
-        from tests.fakes.fake_solver import FakeSolver 
+        from tests.fakes.fake_solver import FakeSolver
 
         problem = make_input(
             cash="500",

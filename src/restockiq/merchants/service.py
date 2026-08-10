@@ -28,7 +28,7 @@ class MerchantService:
     def __init__(self, repository: MerchantRepository) -> None:
         self._repo = repository
 
-    # Merchant lifecycle 
+    # Merchant lifecycle
     async def register_merchant(
         self,
         merchant_id: MerchantId,

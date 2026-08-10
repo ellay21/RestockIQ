@@ -110,7 +110,6 @@ async def service(
 # ──────────────────────────────────────────────────────────────────────────────
 
 
-import pytest_asyncio  # noqa: E402 — must appear after the class body
 
 
 class TestRecommendationServiceOrchestration:
@@ -253,7 +252,7 @@ class TestRecommendationServiceOrchestration:
         class AlwaysInfeasibleSolver(SolverPort):
             def solve(self, problem: OptimizationInput) -> OptimizationResult:
                 return OptimizationResult(
-                    order_plan=OrderPlan(lines=tuple(), cash_cap=problem.cash_cap),
+                    order_plan=OrderPlan(lines=(), cash_cap=problem.cash_cap),
                     solver_status="INFEASIBLE",
                     objective_value=0.0,
                 )

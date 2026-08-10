@@ -42,8 +42,7 @@ def sugar_sku() -> Sku:
     )
 
 
-import pytest
-import pytest_asyncio
+
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Registration

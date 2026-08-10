@@ -12,7 +12,7 @@ class RestockIQError(Exception):
     """Base exception for every domain-level error in RestockIQ."""
 
 
-# Validation 
+# Validation
 
 
 class DomainValidationError(RestockIQError):

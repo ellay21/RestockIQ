@@ -9,7 +9,6 @@ To run locally (with Docker):
 """
 from __future__ import annotations
 
-import asyncio
 import os
 import uuid
 from datetime import UTC, datetime
@@ -98,7 +97,7 @@ async def session(engine) -> AsyncGenerator[AsyncSession, None]:
             await s.rollback()
 
 
-# Postgres Merchant Repository 
+# Postgres Merchant Repository
 
 pytestmark = [
     pytest.mark.integration,

@@ -14,11 +14,7 @@ from logging.config import fileConfig
 from alembic import context
 from sqlalchemy import engine_from_config, pool
 
-import restockiq.merchants.orm_models
-import restockiq.recommendations.orm_models
-import restockiq.signals.orm_models
-
-# Import all ORM models so their metadata is registered 
+# Import all ORM models so their metadata is registered
 # IMPORTANT: every orm_models.py must be imported here; otherwise Alembic
 # won't detect new or removed tables during autogenerate.
 from restockiq.db.base import Base

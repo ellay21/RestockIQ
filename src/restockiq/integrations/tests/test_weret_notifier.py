@@ -1,3 +1,4 @@
+from typing import Any
 """
  WeretNotifier tests using httpx mock transport.
 
@@ -67,9 +68,9 @@ class TestWeretNotifier:
         self, merchant_id: MerchantId, sample_recommendation: RestockRecommendation
     ) -> None:
 
-        sent_payloads: list[dict] = []
+        sent_payloads: list[dict[str, Any]] = []
 
-        def mock_post(url: str, json: dict, headers: dict, timeout: float):
+        def mock_post(url: str, json: dict[str, Any], headers: dict[str, Any], timeout: float) -> httpx.Response:
             sent_payloads.append(json)
             return httpx.Response(200, json={"status": "sent"}, request=httpx.Request("POST", url))
 
@@ -87,7 +88,7 @@ class TestWeretNotifier:
     def test_notifier_raises_external_service_error_on_4xx(
         self, merchant_id: MerchantId, sample_recommendation: RestockRecommendation
     ) -> None:
-        def mock_post(url: str, json: dict, headers: dict, timeout: float):
+        def mock_post(url: str, json: dict[str, Any], headers: dict[str, Any], timeout: float) -> httpx.Response:
             return httpx.Response(403, text="Forbidden", request=httpx.Request("POST", url))
 
         with patch("restockiq.integrations.weret_notifier.httpx.post", side_effect=mock_post):

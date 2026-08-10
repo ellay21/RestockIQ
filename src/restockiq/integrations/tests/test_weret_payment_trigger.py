@@ -1,3 +1,4 @@
+from typing import Any
 """
 WeretPaymentTrigger tests using httpx mock transport.
 """
@@ -32,7 +33,7 @@ class TestWeretPaymentTrigger:
     def test_trigger_payment_returns_transaction_id(
         self, trigger: WeretPaymentTrigger, merchant_id: MerchantId
     ) -> None:
-        def mock_post(url: str, json: dict, headers: dict, timeout: float):
+        def mock_post(url: str, json: dict[str, Any], headers: dict[str, Any], timeout: float) -> httpx.Response:
             return httpx.Response(
                 200, json={"transaction_id": "txn-abc-123"}, request=_DUMMY_REQUEST
             )
@@ -50,9 +51,9 @@ class TestWeretPaymentTrigger:
     def test_trigger_includes_idempotency_key_in_headers(
         self, trigger: WeretPaymentTrigger, merchant_id: MerchantId
     ) -> None:
-        captured_headers: list[dict] = []
+        captured_headers: list[dict[str, Any]] = []
 
-        def mock_post(url: str, json: dict, headers: dict, timeout: float):
+        def mock_post(url: str, json: dict[str, Any], headers: dict[str, Any], timeout: float) -> httpx.Response:
             captured_headers.append(headers)
             return httpx.Response(200, json={"transaction_id": "txn-xyz"}, request=_DUMMY_REQUEST)
 
@@ -72,7 +73,7 @@ class TestWeretPaymentTrigger:
         """Idempotency key must be deterministic for the same merchant+reference."""
         keys: list[str] = []
 
-        def mock_post(url: str, json: dict, headers: dict, timeout: float):
+        def mock_post(url: str, json: dict[str, Any], headers: dict[str, Any], timeout: float) -> httpx.Response:
             keys.append(headers["Idempotency-Key"])
             return httpx.Response(200, json={"transaction_id": "txn"}, request=_DUMMY_REQUEST)
 
@@ -86,7 +87,7 @@ class TestWeretPaymentTrigger:
     def test_payment_trigger_raises_on_http_error(
         self, trigger: WeretPaymentTrigger, merchant_id: MerchantId
     ) -> None:
-        def mock_post(url: str, json: dict, headers: dict, timeout: float):
+        def mock_post(url: str, json: dict[str, Any], headers: dict[str, Any], timeout: float) -> httpx.Response:
             return httpx.Response(400, text="Bad Request", request=_DUMMY_REQUEST)
 
         patch_target = "restockiq.integrations.weret_payment_trigger.httpx.post"

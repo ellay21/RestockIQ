@@ -14,6 +14,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from functools import lru_cache
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from sqlalchemy.ext.asyncio import AsyncEngine, async_sessionmaker, AsyncSession
+    from restockiq.optimizer.saa_solver import SaaSolver
 
 from restockiq.config import Settings
 
@@ -32,8 +37,8 @@ class Container:
     """
 
     settings: Settings
-    _engine: object | None = field(default=None, repr=False)
-    _session_factory: object | None = field(default=None, repr=False)
+    _engine: "AsyncEngine | None" = field(default=None, repr=False)
+    _session_factory: "async_sessionmaker[AsyncSession] | None" = field(default=None, repr=False)
 
     def __post_init__(self) -> None:
         from restockiq.db.session import make_engine, make_session_factory
@@ -42,17 +47,19 @@ class Container:
             self.settings.database_url,
             echo=self.settings.db_echo,
         )
-        self._session_factory = make_session_factory(self._engine)  # type: ignore[arg-type]
+        self._session_factory = make_session_factory(self._engine)  
 
     @property
-    def engine(self):
+    def engine(self) -> "AsyncEngine":
+        assert self._engine is not None
         return self._engine
 
     @property
-    def session_factory(self):
+    def session_factory(self) -> "async_sessionmaker[AsyncSession]":
+        assert self._session_factory is not None
         return self._session_factory
 
-    def make_solver(self):
+    def make_solver(self) -> "SaaSolver":
         """Create the SAA solver with the configured seed."""
         from restockiq.optimizer.saa_solver import SaaSolver
 

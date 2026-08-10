@@ -34,7 +34,7 @@ class SkuSalesInput(BaseModel):
 class ManualSignalRequest(BaseModel):
     merchant_id: uuid.UUID
     currency: str = Field("ETB", min_length=3, max_length=3)
-    cash_on_hand: Decimal = Field(..., ge=0)  # type: ignore[reportArgumentType]
+    cash_on_hand: Decimal = Field(..., ge=0)  
     sales: list[SkuSalesInput] = Field(..., min_length=1)
     captured_at: datetime | None = None
 
@@ -96,7 +96,7 @@ async def ingest_manual_signal(
 )
 async def ingest_csv_signal(
     merchant_id: uuid.UUID = Path(...),
-    cash_on_hand: Decimal = Form(..., ge=0),  # type: ignore[reportArgumentType]
+    cash_on_hand: Decimal = Form(..., ge=0),  
     currency: str = Form("ETB"),
     file: UploadFile = File(...),
     service: SignalService = Depends(get_signal_service),

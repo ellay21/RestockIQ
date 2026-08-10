@@ -1,3 +1,4 @@
+from typing import Any
 """
 These are unit tests — no real WERET server.  The HMAC signature tests use
 a locally computed signature to prove the verification path works.
@@ -29,7 +30,7 @@ VALID_PAYLOAD = {
 }
 
 
-def sign_payload(payload: dict, secret: str) -> str:
+def sign_payload(payload: dict[str, Any], secret: str) -> str:
     body = json.dumps(payload, separators=(",", ":"), sort_keys=True).encode()
     return "sha256=" + hmac.new(secret.encode(), body, hashlib.sha256).hexdigest()
 

@@ -32,7 +32,7 @@ class PostgresSignalRepository(SignalRepository):
     def __init__(self, session: AsyncSession) -> None:
         self._session = session
 
-    async def save(self, signal: MerchantFinancialSignal) -> None:  # type: ignore[override]
+    async def save(self, signal: MerchantFinancialSignal) -> None:  
         model = SignalModel(
             id=uuid.uuid4(),
             merchant_id=signal.merchant_id.id,
@@ -53,7 +53,7 @@ class PostgresSignalRepository(SignalRepository):
             )
         self._session.add(model)
 
-    async def get_history_for_merchant(  # type: ignore[override]
+    async def get_history_for_merchant(  
         self,
         merchant_id: MerchantId,
         limit: int = 30,

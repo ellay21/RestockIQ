@@ -1,3 +1,4 @@
+from typing import Any
 """
 CsvImportAdapter tests.
 
@@ -45,7 +46,7 @@ def merchant_id_str() -> str:
 
 
 @pytest.fixture
-def valid_csv_input(merchant_id_str: str) -> dict:
+def valid_csv_input(merchant_id_str: str) -> dict[str, Any]:
     return {
         "merchant_id": merchant_id_str,
         "currency": "ETB",
@@ -56,7 +57,7 @@ def valid_csv_input(merchant_id_str: str) -> dict:
 
 class TestCsvImportAdapter:
     def test_csv_import_adapter_parses_well_formed_csv(
-        self, csv_adapter: CsvImportAdapter, valid_csv_input: dict
+        self, csv_adapter: CsvImportAdapter, valid_csv_input: dict[str, Any]
     ) -> None:
         signal = csv_adapter.build_signal(valid_csv_input)
         assert isinstance(signal, MerchantFinancialSignal)

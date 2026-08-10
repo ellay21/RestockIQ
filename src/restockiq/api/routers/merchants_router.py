@@ -58,8 +58,8 @@ class RegisterMerchantRequest(BaseModel):
 class AddSkuRequest(BaseModel):
     code: str = Field(..., min_length=1)
     name: str = Field(..., min_length=1, max_length=255)
-    cost_price: Decimal = Field(..., gt=0)  # type: ignore[reportArgumentType]
-    sell_price: Decimal = Field(..., gt=0)  # type: ignore[reportArgumentType]
+    cost_price: Decimal = Field(..., gt=0)  
+    sell_price: Decimal = Field(..., gt=0)  
 
 
 # Helpers

@@ -146,9 +146,9 @@ exclude = ["src/restockiq/db/migrations/", ".venv"]
 [[tool.mypy.overrides]]
 module = [
     "pulp.*",
-    "scipy.*",
     "numpy.*",
-    "testcontainers.*",
+    "hypothesis.*",
+    "tenacity.*",
 ]
 ignore_missing_imports = true
 
@@ -240,3 +240,11 @@ forbidden_modules = [
 [tool.pyright]
 include = ["src", "tests", "conftest.py"]
 extraPaths = ["src", "."]
+
+[[tool.mypy.overrides]]
+module = [
+    "restockiq.integrations.weret_payment_trigger",
+    "restockiq.integrations.weret_notifier",
+    "tests.*",
+]
+disallow_untyped_decorators = false

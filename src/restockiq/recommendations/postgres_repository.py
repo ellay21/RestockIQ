@@ -32,7 +32,7 @@ class PostgresRecommendationRepository(RecommendationRepository):
     def __init__(self, session: AsyncSession) -> None:
         self._session = session
 
-    async def save(self, recommendation: RestockRecommendation) -> None:  # type: ignore[override]
+    async def save(self, recommendation: RestockRecommendation) -> None:  
         currency = recommendation.total_estimated_cost.currency
         model = RecommendationModel(
             id=recommendation.id,
@@ -63,7 +63,7 @@ class PostgresRecommendationRepository(RecommendationRepository):
         # Upsert: merge if already exists
         self._session.add(model)
 
-    async def get_by_id(self, recommendation_id: uuid.UUID) -> RestockRecommendation:  # type: ignore[override]
+    async def get_by_id(self, recommendation_id: uuid.UUID) -> RestockRecommendation:  
         stmt = select(RecommendationModel).where(RecommendationModel.id == recommendation_id)
         result = await self._session.execute(stmt)
         model = result.scalar_one_or_none()
@@ -71,7 +71,7 @@ class PostgresRecommendationRepository(RecommendationRepository):
             raise NotFoundError("RestockRecommendation", str(recommendation_id))
         return self._to_domain(model)
 
-    async def get_latest_for_merchant(  # type: ignore[override]
+    async def get_latest_for_merchant(  
         self,
         merchant_id: MerchantId,
         limit: int = 10,

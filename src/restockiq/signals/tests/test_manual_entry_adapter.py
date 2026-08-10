@@ -1,3 +1,4 @@
+from typing import Any
 """
 ManualEntryAdapter tests.
 
@@ -23,7 +24,7 @@ def adapter() -> ManualEntryAdapter:
 
 
 @pytest.fixture
-def valid_form(merchant_id: str) -> dict:
+def valid_form(merchant_id: str) -> dict[str, Any]:
     return {
         "merchant_id": merchant_id,
         "currency": "ETB",
@@ -42,7 +43,7 @@ def merchant_id() -> str:
 
 class TestManualEntryAdapter:
     def test_manual_entry_adapter_produces_valid_signal_from_form_dict(
-        self, adapter: ManualEntryAdapter, valid_form: dict
+        self, adapter: ManualEntryAdapter, valid_form: dict[str, Any]
     ) -> None:
         signal = adapter.build_signal(valid_form)
         assert isinstance(signal, MerchantFinancialSignal)
@@ -63,7 +64,7 @@ class TestManualEntryAdapter:
         assert SkuCode("SUGAR-1KG") in signal.sku_codes
 
     def test_missing_merchant_id_raises_adapter_error(
-        self, adapter: ManualEntryAdapter, valid_form: dict
+        self, adapter: ManualEntryAdapter, valid_form: dict[str, Any]
     ) -> None:
         del valid_form["merchant_id"]
         with pytest.raises(AdapterError) as exc_info:
@@ -71,7 +72,7 @@ class TestManualEntryAdapter:
         assert exc_info.value.field == "merchant_id"
 
     def test_missing_cash_on_hand_raises_adapter_error(
-        self, adapter: ManualEntryAdapter, valid_form: dict
+        self, adapter: ManualEntryAdapter, valid_form: dict[str, Any]
     ) -> None:
         del valid_form["cash_on_hand"]
         with pytest.raises(AdapterError) as exc_info:
@@ -79,7 +80,7 @@ class TestManualEntryAdapter:
         assert exc_info.value.field == "cash_on_hand"
 
     def test_empty_sales_list_raises_adapter_error(
-        self, adapter: ManualEntryAdapter, valid_form: dict
+        self, adapter: ManualEntryAdapter, valid_form: dict[str, Any]
     ) -> None:
         valid_form["sales"] = []
         with pytest.raises(AdapterError) as exc_info:
@@ -87,7 +88,7 @@ class TestManualEntryAdapter:
         assert exc_info.value.field == "sales"
 
     def test_malformed_sales_row_raises_with_row_index(
-        self, adapter: ManualEntryAdapter, valid_form: dict
+        self, adapter: ManualEntryAdapter, valid_form: dict[str, Any]
     ) -> None:
         valid_form["sales"][1]["quantity_sold"] = "not-a-number"
         with pytest.raises(AdapterError) as exc_info:
@@ -99,7 +100,7 @@ class TestManualEntryAdapter:
             adapter.build_signal("not a dict")
 
     def test_default_captured_at_is_timezone_aware(
-        self, adapter: ManualEntryAdapter, valid_form: dict
+        self, adapter: ManualEntryAdapter, valid_form: dict[str, Any]
     ) -> None:
         """captured_at must be timezone-aware even when not supplied."""
         signal = adapter.build_signal(valid_form)

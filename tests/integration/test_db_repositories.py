@@ -1,3 +1,4 @@
+import typing
 """
 Database repository integration tests.
 
@@ -50,7 +51,7 @@ DATABASE_URL = os.getenv(
 
 
 @pytest_asyncio.fixture(scope="session")
-async def engine():
+async def engine() -> typing.AsyncGenerator[typing.Any, None]:
     """Create the async engine once per test session."""
     eng = make_engine(DATABASE_URL, echo=False)
     yield eng
@@ -58,7 +59,7 @@ async def engine():
 
 
 @pytest_asyncio.fixture(scope="session", autouse=True)
-async def create_tables(engine):
+async def create_tables(engine: typing.Any) -> typing.AsyncGenerator[None, None]:
     """
     Create all tables before the test session begins.
 
@@ -80,7 +81,7 @@ async def create_tables(engine):
 
 
 @pytest_asyncio.fixture
-async def session(engine) -> AsyncGenerator[AsyncSession, None]:
+async def session(engine: typing.Any) -> AsyncGenerator[AsyncSession, None]:
     """
     Provide a transactional session that is rolled back after each test.
 

@@ -1,3 +1,4 @@
+import typing
 """
 End-to-End pipeline integration test.
 This test exercises the full pipeline against a real Postgres database:
@@ -43,14 +44,14 @@ pytestmark = [
 
 
 @pytest_asyncio.fixture(scope="session")
-async def engine():
+async def engine() -> typing.AsyncGenerator[typing.Any, None]:
     eng = make_engine(DATABASE_URL, echo=False)
     yield eng
     await eng.dispose()
 
 
 @pytest_asyncio.fixture(scope="session", autouse=True)
-async def create_tables(engine):
+async def create_tables(engine: typing.Any) -> typing.AsyncGenerator[None, None]:
     async with engine.begin() as conn:
         import restockiq.merchants.orm_models
         import restockiq.recommendations.orm_models
@@ -64,7 +65,7 @@ async def create_tables(engine):
 
 @pytest.mark.integration
 class TestFullPipeline:
-    async def test_full_pipeline_register_signal_recommend(self, engine) -> None:
+    async def test_full_pipeline_register_signal_recommend(self, engine: typing.Any) -> None:
         """
         Full E2E: register merchant → submit signal → generate recommendation.
 

@@ -35,7 +35,7 @@ class PostgresMerchantRepository(MerchantRepository):
     def __init__(self, session: AsyncSession) -> None:
         self._session = session
 
-    async def save(self, merchant: Merchant) -> None:  
+    async def save(self, merchant: Merchant) -> None:
         """Upsert a Merchant and all its SKUs."""
         model = await self._get_or_create_model(merchant)
         # Sync fields
@@ -71,7 +71,7 @@ class PostgresMerchantRepository(MerchantRepository):
                 )
         self._session.add(model)
 
-    async def get_by_id(self, merchant_id: MerchantId) -> Merchant:  
+    async def get_by_id(self, merchant_id: MerchantId) -> Merchant:
         stmt = select(MerchantModel).where(MerchantModel.id == merchant_id.id)
         result = await self._session.execute(stmt)
         model = result.scalar_one_or_none()
@@ -79,11 +79,11 @@ class PostgresMerchantRepository(MerchantRepository):
             raise NotFoundError("Merchant", str(merchant_id))
         return self._to_domain(model)
 
-    async def list_all(self) -> Sequence[Merchant]:  
+    async def list_all(self) -> Sequence[Merchant]:
         result = await self._session.execute(select(MerchantModel))
         return [self._to_domain(m) for m in result.scalars().all()]
 
-    async def exists(self, merchant_id: MerchantId) -> bool:  
+    async def exists(self, merchant_id: MerchantId) -> bool:
         stmt = select(MerchantModel.id).where(MerchantModel.id == merchant_id.id)
         result = await self._session.execute(stmt)
         return result.scalar_one_or_none() is not None

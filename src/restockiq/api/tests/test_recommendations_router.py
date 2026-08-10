@@ -1,7 +1,6 @@
-# Recommendations router API tests.
-
 from __future__ import annotations
 
+# Recommendations router API tests.
 import uuid
 from typing import TYPE_CHECKING
 

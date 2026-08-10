@@ -1,4 +1,3 @@
-import typing
 """
 FastAPI application entry point.
 
@@ -12,6 +11,7 @@ Defines:
 from __future__ import annotations
 
 import logging
+import typing
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
@@ -38,7 +38,7 @@ logger = logging.getLogger(__name__)
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI) -> typing.AsyncGenerator[None, None]:  
+async def lifespan(app: FastAPI) -> typing.AsyncGenerator[None, None]:
     """
     Application startup / shutdown handler.
 

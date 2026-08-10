@@ -1,4 +1,3 @@
-import typing
 """
 End-to-End pipeline integration test.
 This test exercises the full pipeline against a real Postgres database:
@@ -13,6 +12,7 @@ Marked @pytest.mark.integration — requires Postgres.
 from __future__ import annotations
 
 import os
+import typing
 from decimal import Decimal
 
 import pytest

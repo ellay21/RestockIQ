@@ -1,4 +1,3 @@
-from typing import Any
 """
 CsvImportAdapter tests.
 
@@ -8,6 +7,8 @@ just that each adapter works in isolation.
 """
 
 from __future__ import annotations
+
+from typing import Any
 
 import pytest
 

@@ -66,7 +66,7 @@ class RecommendationSchema(BaseModel):
 async def generate_recommendation(
     merchant_id: uuid.UUID = Path(...),
     rec_service: RecommendationService = Depends(get_recommendation_service),
-    signal_service: "SignalService" = Depends(get_signal_service),
+    signal_service: SignalService = Depends(get_signal_service),
 ) -> RecommendationSchema:
     # Fetch signal history through the signal service's repository
     # get history from the signal repository

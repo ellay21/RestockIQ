@@ -1,4 +1,3 @@
-import typing
 """
 Database repository integration tests.
 
@@ -12,6 +11,7 @@ To run locally (with Docker):
 from __future__ import annotations
 
 import os
+import typing
 import uuid
 from datetime import UTC, datetime
 from decimal import Decimal

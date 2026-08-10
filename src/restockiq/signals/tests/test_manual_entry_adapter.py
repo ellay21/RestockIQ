@@ -1,4 +1,3 @@
-from typing import Any
 """
 ManualEntryAdapter tests.
 
@@ -9,6 +8,7 @@ and rejects malformed inputs with clear error messages.
 from __future__ import annotations
 
 from decimal import Decimal
+from typing import Any
 
 import pytest
 

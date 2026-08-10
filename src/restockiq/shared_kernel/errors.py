@@ -5,6 +5,7 @@ All exceptions inherit from RestockIQError so callers can catch the broad
 base type or the specific sub-type — whichever is appropriate.  No third-party
 library types appear here; this module has zero external dependencies.
 """
+
 from __future__ import annotations
 
 

@@ -4,6 +4,7 @@ SignalService — application service: receive, validate, and persist signals.
 Orchestrates: raw input → adapter.build_signal() → validate → repository.save().
 The service is adapter-agnostic — it accepts any SignalSourcePort implementation.
 """
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING

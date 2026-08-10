@@ -1,4 +1,3 @@
-
 # Recommendations router API tests.
 
 from __future__ import annotations

@@ -6,6 +6,7 @@ can be tested without a real WERET server.
 
 Hexagonal rigor: FULL - no httpx or external service imports permitted.
 """
+
 from __future__ import annotations
 
 import abc

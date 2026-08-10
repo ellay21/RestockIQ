@@ -6,6 +6,7 @@ driven-adapter layer and must never be imported by domain.py or service.py.
 The PostgresMerchantRepository is responsible for mapping between these
 models and the Merchant/Sku domain entities.
 """
+
 from __future__ import annotations
 
 import uuid

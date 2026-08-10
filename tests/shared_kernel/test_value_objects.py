@@ -3,6 +3,7 @@ Shared Kernel unit tests.
 All tests are pure: no I/O, no mocks, no fixtures beyond simple construction.
 These are the fastest tests in the project and must remain that way forever.
 """
+
 from __future__ import annotations
 
 from decimal import Decimal
@@ -160,5 +161,6 @@ class TestMerchantId:
     def test_merchant_id_is_immutable(self) -> None:
         mid = MerchantId.generate()
         import uuid
+
         with pytest.raises((AttributeError, TypeError)):
             mid.id = uuid.uuid4()  # type: ignore[misc]

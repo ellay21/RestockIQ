@@ -7,6 +7,7 @@ To run locally (with Docker):
     docker compose up -d postgres
     pytest -m integration
 """
+
 from __future__ import annotations
 
 import os
@@ -48,9 +49,6 @@ DATABASE_URL = os.getenv(
 # Fixtures
 
 
-
-
-
 @pytest_asyncio.fixture(scope="session")
 async def engine():
     """Create the async engine once per test session."""
@@ -73,6 +71,7 @@ async def create_tables(engine):
         import restockiq.merchants.orm_models
         import restockiq.recommendations.orm_models
         import restockiq.signals.orm_models  # noqa: F401
+
         await conn.run_sync(Base.metadata.create_all)
     yield
     # Teardown: drop all tables after the session
@@ -120,9 +119,7 @@ class TestPostgresMerchantRepository:
         assert fetched.name == "Corner Shop"
         assert fetched.currency == "ETB"
 
-    async def test_merchant_with_skus_persists_and_reloads(
-        self, session: AsyncSession
-    ) -> None:
+    async def test_merchant_with_skus_persists_and_reloads(self, session: AsyncSession) -> None:
         from restockiq.merchants.postgres_repository import PostgresMerchantRepository
 
         repo = PostgresMerchantRepository(session)
@@ -152,6 +149,7 @@ class TestPostgresMerchantRepository:
 
 
 # Postgres Signal Repository
+
 
 @pytest.mark.integration
 class TestPostgresSignalRepository:
@@ -200,6 +198,7 @@ class TestPostgresSignalRepository:
 
 
 # Postgres Recommendation Repository
+
 
 @pytest.mark.integration
 class TestPostgresRecommendationRepository:

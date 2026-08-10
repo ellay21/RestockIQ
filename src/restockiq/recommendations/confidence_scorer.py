@@ -19,6 +19,7 @@ Scoring model:
 
 This module is pure domain logic — zero I/O, zero framework imports.
 """
+
 from __future__ import annotations
 
 from restockiq.recommendations.domain import ConfidenceLevel

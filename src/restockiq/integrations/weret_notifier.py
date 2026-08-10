@@ -6,6 +6,7 @@ Uses httpx with tenacity retry logic (3 attempts, exponential backoff).
 Architecture: this module is a driven adapter - it must not be imported
 from any domain module, port, or service.  It is wired in via container.py.
 """
+
 from __future__ import annotations
 
 import logging

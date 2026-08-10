@@ -5,6 +5,7 @@ Orchestrates domain entities through the MerchantRepository port.  This class
 has no direct knowledge of HTTP, databases, or external services; it only
 speaks domain types.
 """
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING

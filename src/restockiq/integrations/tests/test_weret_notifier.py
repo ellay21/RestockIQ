@@ -4,6 +4,7 @@
 No real WERET server required — uses httpx's MockTransport to inject
 canned responses.  Tests both success and error paths, plus retry behaviour.
 """
+
 from __future__ import annotations
 
 import uuid

@@ -1,6 +1,7 @@
 """
 RecommendationRepository port + InMemoryRecommendationRepository.
 """
+
 from __future__ import annotations
 
 import abc
@@ -64,9 +65,7 @@ class InMemoryRecommendationRepository(RecommendationRepository):
         merchant_id: MerchantId,
         limit: int = 10,
     ) -> Sequence[RestockRecommendation]:
-        matching = [
-            r for r in self._store.values() if r.merchant_id == merchant_id
-        ]
+        matching = [r for r in self._store.values() if r.merchant_id == merchant_id]
         matching.sort(key=lambda r: r.created_at, reverse=True)
         return matching[:limit]
 

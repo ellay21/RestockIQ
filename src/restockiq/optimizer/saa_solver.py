@@ -18,6 +18,7 @@ Algorithm (SAA for cash-constrained newsvendor):
   3. Solve with CBC (PuLP's bundled open-source solver).
   4. Wrap the solution in the domain types defined in domain.py.
 """
+
 from __future__ import annotations
 
 import math
@@ -99,8 +100,7 @@ class SaaSolver(SolverPort):
 
         prob += (
             pulp.lpSum(
-                float(sku.cost_per_unit.amount) * x[sku.sku_code]
-                for sku in problem.sku_lines
+                float(sku.cost_per_unit.amount) * x[sku.sku_code] for sku in problem.sku_lines
             )
             <= float(problem.cash_cap.amount),
             "Budget",
@@ -155,9 +155,7 @@ class SaaSolver(SolverPort):
         scenarios: dict[SkuCode, list[int]] = {}
         for sku in problem.sku_lines:
             lam = sku.mean_daily_demand * sku.lead_time_days
-            scenarios[sku.sku_code] = [
-                self._poisson_sample(lam) for _ in range(n_scenarios)
-            ]
+            scenarios[sku.sku_code] = [self._poisson_sample(lam) for _ in range(n_scenarios)]
         return scenarios
 
     def _poisson_sample(self, lam: float) -> int:

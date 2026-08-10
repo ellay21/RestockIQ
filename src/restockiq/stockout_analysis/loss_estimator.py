@@ -4,6 +4,7 @@ StockoutLossEstimator — estimates cash lost due to a stockout event.
 Pure domain logic: no I/O.  Takes a StockoutEvent and a SKU's sell price
 to compute the estimated gross revenue and margin lost.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass

@@ -4,6 +4,7 @@ Optimizer domain unit tests.
 Tests the OrderPlan cash-cap invariant and domain entity construction.
 Pure: no PuLP, no I/O.
 """
+
 from __future__ import annotations
 
 from decimal import Decimal
@@ -78,6 +79,7 @@ class TestSkuInputLine:
 
 # SkuOrderLine
 
+
 class TestSkuOrderLine:
     def test_negative_units_to_order_raises(self) -> None:
         with pytest.raises(DomainValidationError, match="negative"):
@@ -99,6 +101,7 @@ class TestSkuOrderLine:
 
 
 # OrderPlan cash-cap invariant
+
 
 class TestOrderPlanCashCapInvariant:
     def test_order_plan_within_cash_cap_is_valid(self) -> None:
@@ -143,6 +146,7 @@ class TestOrderPlanCashCapInvariant:
 
 
 # OptimizationResult
+
 
 class TestOptimizationResult:
     def test_invalid_status_raises(self) -> None:

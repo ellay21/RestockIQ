@@ -5,6 +5,7 @@ Returns a predictable plan where each SKU gets floor(cash_cap / cost_per_unit / 
 units, staying within budget.  The result is deterministic and reproducible —
 the actual allocation is not optimal, but it is always valid (cash cap respected).
 """
+
 from __future__ import annotations
 
 from decimal import Decimal
@@ -53,7 +54,5 @@ class FakeSolver(SolverPort):
         return OptimizationResult(
             order_plan=OrderPlan(lines=tuple(lines), cash_cap=problem.cash_cap),
             solver_status="FEASIBLE",
-            objective_value=sum(
-                float(line.expected_margin.amount) for line in lines
-            ),
+            objective_value=sum(float(line.expected_margin.amount) for line in lines),
         )

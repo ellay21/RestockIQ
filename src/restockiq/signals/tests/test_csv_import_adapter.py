@@ -5,6 +5,7 @@ Both adapters (ManualEntry and Csv) must produce structurally identical
 MerchantFinancialSignal objects — this proves the port abstraction works, not
 just that each adapter works in isolation.
 """
+
 from __future__ import annotations
 
 import pytest
@@ -141,9 +142,7 @@ class TestBothAdaptersProduceIdenticalSignalShape:
     proof that the SignalSourcePort abstraction actually works.
     """
 
-    def test_manual_and_csv_signals_are_structurally_identical(
-        self, merchant_id_str: str
-    ) -> None:
+    def test_manual_and_csv_signals_are_structurally_identical(self, merchant_id_str: str) -> None:
         manual_adapter = ManualEntryAdapter()
         csv_adapter = CsvImportAdapter()
 

@@ -4,6 +4,7 @@ ManualEntryAdapter tests.
 Proves the adapter correctly translates a form dict into a MerchantFinancialSignal
 and rejects malformed inputs with clear error messages.
 """
+
 from __future__ import annotations
 
 from decimal import Decimal

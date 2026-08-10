@@ -4,6 +4,7 @@ MerchantService tests against the in-memory fake repository.
 No database, no FastAPI — the service is tested in isolation through the
 port abstraction.
 """
+
 from __future__ import annotations
 
 from decimal import Decimal
@@ -40,8 +41,6 @@ def sugar_sku() -> Sku:
         cost_price=Money(Decimal("20"), "ETB"),
         sell_price=Money(Decimal("25"), "ETB"),
     )
-
-
 
 
 # ──────────────────────────────────────────────────────────────────────────────

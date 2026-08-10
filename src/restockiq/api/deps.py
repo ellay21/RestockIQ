@@ -5,6 +5,7 @@ All FastAPI route dependencies (Depends(...)) are defined here.
 Each dependency creates per-request infrastructure objects (AsyncSession,
 services) using the container's engine/session_factory.
 """
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING

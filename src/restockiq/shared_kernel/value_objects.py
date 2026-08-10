@@ -11,6 +11,7 @@ Value objects defined here:
   SkuCode    — a normalised (uppercase) product identifier
   MerchantId — a UUID that uniquely identifies a merchant
 """
+
 from __future__ import annotations
 
 import uuid
@@ -49,13 +50,10 @@ class Money:
                     f"Money amount must be a valid decimal, got {self.amount!r}"
                 ) from exc
         if self.amount < Decimal(0):
-            raise DomainValidationError(
-                f"Money amount cannot be negative, got {self.amount}"
-            )
+            raise DomainValidationError(f"Money amount cannot be negative, got {self.amount}")
         if not self.currency or len(self.currency) != 3 or not self.currency.isalpha():
             raise DomainValidationError(
-                f"currency must be a 3-letter ISO 4217 code (e.g. 'ETB'), "
-                f"got {self.currency!r}"
+                f"currency must be a 3-letter ISO 4217 code (e.g. 'ETB'), got {self.currency!r}"
             )
         # Normalise currency to uppercase
         object.__setattr__(self, "currency", self.currency.upper())
@@ -80,13 +78,9 @@ class Money:
         try:
             decimal_factor = Decimal(str(factor))
         except InvalidOperation as exc:
-            raise DomainValidationError(
-                f"Cannot multiply Money by {factor!r}"
-            ) from exc
+            raise DomainValidationError(f"Cannot multiply Money by {factor!r}") from exc
         if decimal_factor < Decimal(0):
-            raise DomainValidationError(
-                f"Cannot multiply Money by a negative factor ({factor})"
-            )
+            raise DomainValidationError(f"Cannot multiply Money by a negative factor ({factor})")
         return Money(amount=self.amount * decimal_factor, currency=self.currency)
 
     # Comparison
@@ -112,8 +106,7 @@ class Money:
     def _assert_same_currency(self, other: Money, op: str) -> None:
         if self.currency != other.currency:
             raise DomainValidationError(
-                f"Cannot {op} {self.currency} and {other.currency}: "
-                "currency mismatch"
+                f"Cannot {op} {self.currency} and {other.currency}: currency mismatch"
             )
 
     @classmethod
@@ -148,9 +141,7 @@ class Quantity:
                 f"Quantity.units must be an integer, got {type(self.units).__name__}"
             )
         if self.units <= 0:
-            raise DomainValidationError(
-                f"Quantity must be strictly positive, got {self.units}"
-            )
+            raise DomainValidationError(f"Quantity must be strictly positive, got {self.units}")
 
     def __add__(self, other: Quantity) -> Quantity:
         return Quantity(units=self.units + other.units)
@@ -225,8 +216,7 @@ class MerchantId:
     def __post_init__(self) -> None:
         if not isinstance(self.id, uuid.UUID):
             raise DomainValidationError(
-                f"MerchantId.id must be a uuid.UUID instance, "
-                f"got {type(self.id).__name__!r}"
+                f"MerchantId.id must be a uuid.UUID instance, got {type(self.id).__name__!r}"
             )
 
     @classmethod
@@ -240,9 +230,7 @@ class MerchantId:
         try:
             return cls(id=uuid.UUID(value))
         except ValueError as exc:
-            raise DomainValidationError(
-                f"Cannot parse {value!r} as a MerchantId: {exc}"
-            ) from exc
+            raise DomainValidationError(f"Cannot parse {value!r} as a MerchantId: {exc}") from exc
 
     def __str__(self) -> str:
         return str(self.id)

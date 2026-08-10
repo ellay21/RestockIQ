@@ -6,6 +6,7 @@ Alembic migration environment for RestockIQ.
   2. Reads DATABASE_URL from the environment (falls back to alembic.ini).
   3. Supports both online (direct DB connection) and offline (SQL script) modes.
 """
+
 from __future__ import annotations
 
 import os

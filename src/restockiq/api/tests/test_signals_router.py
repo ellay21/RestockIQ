@@ -2,6 +2,7 @@
 Signals router API tests.
 Tests manual entry and CSV upload endpoints.
 """
+
 from __future__ import annotations
 
 import io
@@ -46,9 +47,7 @@ class TestSignalsRouter:
         assert data["input_method"] == "csv_import"
         assert data["sales_record_count"] == 2
 
-    def test_manual_signal_with_empty_sales_returns_422(
-        self, client: TestClient
-    ) -> None:
+    def test_manual_signal_with_empty_sales_returns_422(self, client: TestClient) -> None:
         merchant_id = str(uuid.uuid4())
         response = client.post(
             f"/api/v1/merchants/{merchant_id}/signals/manual",
@@ -61,9 +60,7 @@ class TestSignalsRouter:
         )
         assert response.status_code == 422
 
-    def test_manual_signal_missing_cash_returns_422(
-        self, client: TestClient
-    ) -> None:
+    def test_manual_signal_missing_cash_returns_422(self, client: TestClient) -> None:
         merchant_id = str(uuid.uuid4())
         response = client.post(
             f"/api/v1/merchants/{merchant_id}/signals/manual",

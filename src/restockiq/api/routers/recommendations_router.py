@@ -1,6 +1,7 @@
 """
 Recommendations router - generate and retrieve restocking recommendations.
 """
+
 from __future__ import annotations
 
 import uuid
@@ -73,6 +74,7 @@ async def generate_recommendation(
     )
     if not history:
         from restockiq.shared_kernel.errors import NotFoundError
+
         raise NotFoundError(
             "Signal",
             f"No signal history found for merchant {merchant_id}. "
@@ -123,9 +125,7 @@ async def get_recommendations(
     merchant_id: uuid.UUID = Path(...),
     rec_service: RecommendationService = Depends(get_recommendation_service),
 ) -> list[RecommendationSchema]:
-    recs = await rec_service._repo.get_latest_for_merchant(
-        MerchantId(id=merchant_id), limit=10
-    )
+    recs = await rec_service._repo.get_latest_for_merchant(MerchantId(id=merchant_id), limit=10)
     result = []
     for rec in recs:
         currency = rec.total_estimated_cost.currency

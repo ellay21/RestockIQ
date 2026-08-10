@@ -2,6 +2,7 @@
 These are unit tests — no real WERET server.  The HMAC signature tests use
 a locally computed signature to prove the verification path works.
 """
+
 from __future__ import annotations
 
 import hashlib

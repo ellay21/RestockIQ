@@ -4,6 +4,7 @@ sales velocity dropping to near-zero in the most recent period.
 
 Domain logic only: no I/O, no framework imports.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -35,7 +36,7 @@ class StockoutEvent:
 
 
 # Thresholds for severity classification
-_HIGH_THRESHOLD = 0.25   # velocity dropped to < 25% of baseline → HIGH severity
+_HIGH_THRESHOLD = 0.25  # velocity dropped to < 25% of baseline → HIGH severity
 _MEDIUM_THRESHOLD = 0.50  # velocity dropped to < 50% of baseline → MEDIUM
 
 

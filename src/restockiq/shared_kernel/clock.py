@@ -6,6 +6,7 @@ must accept a Clock dependency — never call datetime.now() directly.
 This lets tests freeze time to a known value and remove all flakiness
 from time-sensitive assertions.
 """
+
 from __future__ import annotations
 
 import abc

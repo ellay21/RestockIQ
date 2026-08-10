@@ -16,6 +16,7 @@ Expected raw_input shape (dict):
         "captured_at": str (ISO 8601 datetime, timezone-aware) | None
     }
 """
+
 from __future__ import annotations
 
 from datetime import UTC, datetime
@@ -155,9 +156,7 @@ class ManualEntryAdapter(SignalSourcePort):
         try:
             sku_code = SkuCode(str(sku_raw))
         except Exception as exc:
-            raise AdapterError(
-                self.SOURCE, str(exc), field=f"{field_prefix}.sku_code"
-            ) from exc
+            raise AdapterError(self.SOURCE, str(exc), field=f"{field_prefix}.sku_code") from exc
 
         try:
             quantity_sold = int(qty_raw)

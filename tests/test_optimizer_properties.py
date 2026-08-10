@@ -12,6 +12,7 @@ Key properties tested:
   3. Infeasibility handling: zero cash → zero units for all SKUs.
   4. Output stability: solver_status is always one of the valid strings.
 """
+
 from __future__ import annotations
 
 from decimal import Decimal
@@ -26,6 +27,7 @@ from restockiq.shared_kernel.value_objects import Money, SkuCode
 
 # Strategy helpers
 
+
 def sku_input_strategy(currency: str = "ETB") -> st.SearchStrategy[SkuInputLine]:
     """Generate a valid SkuInputLine with positive margin."""
     return st.tuples(
@@ -37,34 +39,40 @@ def sku_input_strategy(currency: str = "ETB") -> st.SearchStrategy[SkuInputLine]
             min_size=2,
             max_size=10,
         ),
-    ).map(lambda args: SkuInputLine(
-        sku_code=SkuCode(args[3]),
-        cost_per_unit=Money(args[0], currency),
-        sell_price_per_unit=Money(args[0] + args[1], currency),
-        mean_daily_demand=args[2],
-        lead_time_days=7,
-    ))
+    ).map(
+        lambda args: SkuInputLine(
+            sku_code=SkuCode(args[3]),
+            cost_per_unit=Money(args[0], currency),
+            sell_price_per_unit=Money(args[0] + args[1], currency),
+            mean_daily_demand=args[2],
+            lead_time_days=7,
+        )
+    )
 
 
 def optimization_input_strategy() -> st.SearchStrategy[OptimizationInput]:
     """Generate a valid OptimizationInput with 1-4 SKUs."""
-    return st.tuples(
-        st.decimals(min_value=Decimal("0"), max_value=Decimal("1000"), places=2),
-        st.lists(
-            sku_input_strategy(),
-            min_size=1,
-            max_size=4,
-            unique_by=lambda x: x.sku_code.code,
-        ),
-        st.integers(min_value=10, max_value=30),
-    ).filter(
-        # Filter out SKUs with duplicate codes after generation
-        lambda args: len({s.sku_code for s in args[1]}) == len(args[1])
-    ).map(
-        lambda args: OptimizationInput(
-            cash_cap=Money(args[0], "ETB"),
-            sku_lines=tuple(args[1]),
-            n_scenarios=args[2],
+    return (
+        st.tuples(
+            st.decimals(min_value=Decimal("0"), max_value=Decimal("1000"), places=2),
+            st.lists(
+                sku_input_strategy(),
+                min_size=1,
+                max_size=4,
+                unique_by=lambda x: x.sku_code.code,
+            ),
+            st.integers(min_value=10, max_value=30),
+        )
+        .filter(
+            # Filter out SKUs with duplicate codes after generation
+            lambda args: len({s.sku_code for s in args[1]}) == len(args[1])
+        )
+        .map(
+            lambda args: OptimizationInput(
+                cash_cap=Money(args[0], "ETB"),
+                sku_lines=tuple(args[1]),
+                n_scenarios=args[2],
+            )
         )
     )
 
@@ -76,9 +84,7 @@ def optimization_input_strategy() -> st.SearchStrategy[OptimizationInput]:
 class TestOptimizerProperties:
     @given(problem=optimization_input_strategy())
     @settings(max_examples=50, deadline=10_000)
-    def test_cash_cap_invariant_holds_for_all_inputs(
-        self, problem: OptimizationInput
-    ) -> None:
+    def test_cash_cap_invariant_holds_for_all_inputs(self, problem: OptimizationInput) -> None:
         """
         For every valid problem, the total cost of the resulting plan
         must never exceed the cash cap.
@@ -98,9 +104,7 @@ class TestOptimizerProperties:
 
     @given(problem=optimization_input_strategy())
     @settings(max_examples=30, deadline=10_000)
-    def test_solver_status_is_always_valid(
-        self, problem: OptimizationInput
-    ) -> None:
+    def test_solver_status_is_always_valid(self, problem: OptimizationInput) -> None:
         """solver_status must always be one of the known valid strings."""
         solver = SaaSolver(seed=42)
         result = solver.solve(problem)

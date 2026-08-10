@@ -14,6 +14,7 @@ Deciding factors (in priority order):
 
 This module is pure domain logic — zero I/O, zero framework imports.
 """
+
 from __future__ import annotations
 
 from decimal import Decimal
@@ -98,7 +99,7 @@ class RationaleGenerator:
                     estimated_cost=Money.zero(currency),
                     expected_margin=Money.zero(currency),
                     rationale="Not ordered this cycle — other SKUs give a better return "
-                              "for your available cash.",
+                    "for your available cash.",
                     deciding_factor=FACTOR_SKIP,
                 )
             )
@@ -113,9 +114,11 @@ class RationaleGenerator:
         is_cash_constrained: bool,
     ) -> tuple[str, str]:
         margin_amount = line.sell_price_per_unit.amount - line.cost_per_unit.amount
-        margin_pct = int(
-            (margin_amount / line.sell_price_per_unit.amount) * 100
-        ) if line.sell_price_per_unit.amount else 0
+        margin_pct = (
+            int((margin_amount / line.sell_price_per_unit.amount) * 100)
+            if line.sell_price_per_unit.amount
+            else 0
+        )
 
         # Cash-constrained: this SKU was chosen over others because of its return
         if is_cash_constrained and line.sku_code == highest_margin_sku:

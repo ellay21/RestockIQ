@@ -8,6 +8,7 @@ session factory provided here — never create engines directly in domain code.
 The async engine uses asyncpg for async I/O; the sync engine used by
 Alembic migrations is derived automatically from the async URL.
 """
+
 from __future__ import annotations
 
 from contextlib import asynccontextmanager
@@ -35,13 +36,11 @@ def make_engine(database_url: str, *, echo: bool = False) -> AsyncEngine:
     """
     if not database_url.startswith("postgresql+asyncpg://"):
         # Normalise a bare postgresql:// URL to asyncpg
-        database_url = database_url.replace(
-            "postgresql://", "postgresql+asyncpg://", 1
-        )
+        database_url = database_url.replace("postgresql://", "postgresql+asyncpg://", 1)
     return create_async_engine(
         database_url,
         echo=echo,
-        pool_pre_ping=True,   # Re-validate connections before use
+        pool_pre_ping=True,  # Re-validate connections before use
         pool_size=5,
         max_overflow=10,
     )

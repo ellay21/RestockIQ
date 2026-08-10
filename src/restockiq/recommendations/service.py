@@ -12,6 +12,7 @@ Pricing: SKU cost/sell prices are sourced from the merchant's own catalog
 added to the catalog, a configurable default price is used and a WARNING is
 emitted so the operator can correct the catalog.
 """
+
 from __future__ import annotations
 
 import logging

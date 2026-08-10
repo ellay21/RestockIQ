@@ -6,6 +6,7 @@ without knowing which concrete adapter is wired in.
 
 Hexagonal rigor: FULL — no concrete adapter or framework imports permitted.
 """
+
 from __future__ import annotations
 
 import abc

@@ -6,6 +6,7 @@ Alembic's autogenerate can discover them all in one pass.
 
 Only infrastructure lives here — no domain models.
 """
+
 from __future__ import annotations
 
 from sqlalchemy.orm import DeclarativeBase

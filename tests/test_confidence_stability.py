@@ -4,6 +4,7 @@ Confidence scorer stability property tests.
 Tests that confidence scores are monotonically ordered across input methods
 and sample sizes for all possible combinations.
 """
+
 from __future__ import annotations
 
 from datetime import UTC, datetime
@@ -18,6 +19,7 @@ from restockiq.shared_kernel.value_objects import MerchantId, Money, SkuCode
 from restockiq.signals.domain import MerchantFinancialSignal, SignalInputMethod, SkuSalesRecord
 
 # Strategy helpers
+
 
 def make_test_signal(method: SignalInputMethod) -> MerchantFinancialSignal:
     return MerchantFinancialSignal(
@@ -36,9 +38,7 @@ def make_test_signal(method: SignalInputMethod) -> MerchantFinancialSignal:
 class TestConfidenceStability:
     @given(sample_size=st.integers(min_value=0, max_value=200))
     @settings(max_examples=100, deadline=1_000)
-    def test_confidence_score_always_in_valid_range(
-        self, sample_size: int
-    ) -> None:
+    def test_confidence_score_always_in_valid_range(self, sample_size: int) -> None:
         """For any sample_size and any input method, score ∈ [0.10, 0.95]."""
         scorer = ConfidenceScorer()
         for method in SignalInputMethod:
@@ -51,9 +51,7 @@ class TestConfidenceStability:
 
     @given(sample_size=st.integers(min_value=0, max_value=200))
     @settings(max_examples=50, deadline=1_000)
-    def test_weret_always_scores_higher_than_manual(
-        self, sample_size: int
-    ) -> None:
+    def test_weret_always_scores_higher_than_manual(self, sample_size: int) -> None:
         """
         WERET-sourced signals must always score higher than manual-entry signals
         at the same sample size.
@@ -78,9 +76,7 @@ class TestConfidenceStability:
         s2=st.integers(min_value=30, max_value=200),
     )
     @settings(max_examples=50, deadline=1_000)
-    def test_higher_sample_size_never_reduces_confidence(
-        self, s1: int, s2: int
-    ) -> None:
+    def test_higher_sample_size_never_reduces_confidence(self, s1: int, s2: int) -> None:
         """
         For any input method, a larger sample size must yield a confidence score
         >= the score at a smaller sample size.

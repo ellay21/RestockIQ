@@ -1,6 +1,7 @@
 """
 PostgresRecommendationRepository — async SQLAlchemy implementation.
 """
+
 from __future__ import annotations
 
 import uuid

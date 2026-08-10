@@ -7,6 +7,7 @@ is valid, not that all contracts currently pass (an empty codebase trivially
 passes every forbidden-import contract because there is no code to violate
 them). The actual contract enforcement happens in CI via `lint-imports`.
 """
+
 from __future__ import annotations
 
 import subprocess

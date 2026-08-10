@@ -4,6 +4,7 @@ ConfidenceScorer tests.
   - test_confidence_reflects_sample_size
 
 """
+
 from __future__ import annotations
 
 from datetime import UTC, datetime
@@ -64,16 +65,12 @@ class TestConfidenceScorer:
             s, _ = scorer.score(signal, sample_size=sample_size)
             assert 0.10 <= s <= 0.95, f"Score {s:.3f} out of range for sample_size={sample_size}"
 
-    def test_weret_with_large_sample_yields_high_confidence(
-        self, scorer: ConfidenceScorer
-    ) -> None:
+    def test_weret_with_large_sample_yields_high_confidence(self, scorer: ConfidenceScorer) -> None:
         signal = make_signal(SignalInputMethod.WERET_WEBHOOK)
         _score, level = scorer.score(signal, sample_size=30)
         assert level == ConfidenceLevel.HIGH
 
-    def test_manual_with_no_history_yields_low_confidence(
-        self, scorer: ConfidenceScorer
-    ) -> None:
+    def test_manual_with_no_history_yields_low_confidence(self, scorer: ConfidenceScorer) -> None:
         signal = make_signal(SignalInputMethod.MANUAL_ENTRY)
         _score, level = scorer.score(signal, sample_size=0)
         assert level == ConfidenceLevel.LOW

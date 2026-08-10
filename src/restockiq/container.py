@@ -9,6 +9,7 @@ Design: a simple manual DI container using Python dataclasses.  We deliberately
 avoid third-party DI frameworks (FastAPI Depends is used only at the HTTP boundary)
 to keep the domain testable without the web framework.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
@@ -54,6 +55,7 @@ class Container:
     def make_solver(self):
         """Create the SAA solver with the configured seed."""
         from restockiq.optimizer.saa_solver import SaaSolver
+
         return SaaSolver(seed=self.settings.saa_seed)
 
 
@@ -70,8 +72,7 @@ def get_container() -> Container:
     """Return the global Container singleton."""
     if _container is None:
         raise RuntimeError(
-            "Container has not been initialised. "
-            "Call build_container() during application startup."
+            "Container has not been initialised. Call build_container() during application startup."
         )
     return _container
 

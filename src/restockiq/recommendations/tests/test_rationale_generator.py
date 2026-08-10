@@ -6,6 +6,7 @@ The rationale must reference the real number (margin, velocity), not a
 generic template string that could apply to any SKU.
 
 """
+
 from __future__ import annotations
 
 from decimal import Decimal
@@ -68,7 +69,7 @@ class TestRationaleGenerator:
             cash="200",
             lines=[
                 ("HIGH-MARGIN", 5, "20", "40", 4.0),  # margin = 20 ETB, 50%
-                ("LOW-MARGIN",  5, "20", "22", 4.0),  # margin = 2 ETB, 9%
+                ("LOW-MARGIN", 5, "20", "22", 4.0),  # margin = 2 ETB, 9%
             ],
         )
         recommendations = generator.generate(result, currency="ETB")
@@ -94,9 +95,7 @@ class TestRationaleGenerator:
         assert by_code["SKIPPED"].deciding_factor == FACTOR_SKIP
         assert by_code["SKIPPED"].units_to_order == 0
 
-    def test_highest_velocity_gets_velocity_factor(
-        self, generator: RationaleGenerator
-    ) -> None:
+    def test_highest_velocity_gets_velocity_factor(self, generator: RationaleGenerator) -> None:
         result = make_result(
             cash="200",
             lines=[
@@ -108,9 +107,7 @@ class TestRationaleGenerator:
         by_code = {r.sku_code.code: r for r in recommendations}
         assert by_code["FAST-SELLER"].deciding_factor == FACTOR_HIGH_VELOCITY
 
-    def test_generates_one_recommendation_per_line(
-        self, generator: RationaleGenerator
-    ) -> None:
+    def test_generates_one_recommendation_per_line(self, generator: RationaleGenerator) -> None:
         result = make_result(
             cash="200",
             lines=[

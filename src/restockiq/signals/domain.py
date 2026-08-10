@@ -7,6 +7,7 @@ It is the primary input to the demand estimator and the optimizer.
 Hexagonal rigor: FULL — this is the primary port/adapter surface.
 Domain code here has zero I/O or framework imports.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -38,7 +39,7 @@ class SignalInputMethod(StrEnum):
 class CashSource(StrEnum):
     """Records how the cash_on_hand figure was obtained."""
 
-    MANUAL = "manual"          # Merchant typed in a number
+    MANUAL = "manual"  # Merchant typed in a number
     WERET_FORECAST = "weret_forecast"  # Pulled from WERET's cash-flow forecast
 
 
@@ -53,8 +54,8 @@ class SkuSalesRecord:
     """
 
     sku_code: SkuCode
-    quantity_sold: int    # Total units sold in the reporting period
-    period_days: int      # Length of the reporting period in calendar days
+    quantity_sold: int  # Total units sold in the reporting period
+    period_days: int  # Length of the reporting period in calendar days
 
     def __post_init__(self) -> None:
         if self.quantity_sold < 0:
@@ -103,13 +104,9 @@ class MerchantFinancialSignal:
             )
         # Money already validates non-negative, but we re-state for clarity
         if self.cash_on_hand.amount < 0:
-            raise SignalValidationError(
-                f"cash_on_hand cannot be negative, got {self.cash_on_hand}"
-            )
+            raise SignalValidationError(f"cash_on_hand cannot be negative, got {self.cash_on_hand}")
         if self.captured_at.tzinfo is None:
-            raise SignalValidationError(
-                "captured_at must be a timezone-aware datetime"
-            )
+            raise SignalValidationError("captured_at must be a timezone-aware datetime")
 
     @property
     def sku_codes(self) -> frozenset[SkuCode]:

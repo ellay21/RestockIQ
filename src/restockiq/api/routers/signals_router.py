@@ -1,6 +1,7 @@
 """
 Signals router — ingest merchant financial signals via manual entry or CSV.
 """
+
 from __future__ import annotations
 
 import uuid
@@ -49,6 +50,7 @@ class SignalResponse(BaseModel):
 
 # Endpoints
 
+
 @router.post(
     "/merchants/{merchant_id}/signals/manual",
     response_model=SignalResponse,
@@ -72,9 +74,7 @@ async def ingest_manual_signal(
             }
             for s in body.sales
         ],
-        "captured_at": (
-            body.captured_at.isoformat() if body.captured_at else None
-        ),
+        "captured_at": (body.captured_at.isoformat() if body.captured_at else None),
     }
     adapter = ManualEntryAdapter()
     signal = await service.ingest_from_adapter(adapter, raw_input)

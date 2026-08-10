@@ -8,6 +8,7 @@ Implementations:
 Service code must never reference a concrete repository class directly
 — only the abstract port.
 """
+
 from __future__ import annotations
 
 import abc

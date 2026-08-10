@@ -9,6 +9,7 @@ for every dependency — no database, no solver, no HTTP.
 touching a database or the web framework."
 
 """
+
 from __future__ import annotations
 
 from datetime import UTC, datetime
@@ -110,8 +111,6 @@ async def service(
 # ──────────────────────────────────────────────────────────────────────────────
 
 
-
-
 class TestRecommendationServiceOrchestration:
     pytestmark = pytest.mark.asyncio
 
@@ -161,9 +160,7 @@ class TestRecommendationServiceOrchestration:
             sku_code = sku_rec.sku_code
             if sku_rec.units_to_order > 0:
                 expected_cost_per_unit = cost_by_sku[sku_code].amount
-                actual_cost_per_unit = (
-                    sku_rec.estimated_cost.amount / sku_rec.units_to_order
-                )
+                actual_cost_per_unit = sku_rec.estimated_cost.amount / sku_rec.units_to_order
                 assert actual_cost_per_unit == expected_cost_per_unit, (
                     f"SKU {sku_code}: expected cost/unit {expected_cost_per_unit}, "
                     f"got {actual_cost_per_unit}. Catalog prices are not being used."

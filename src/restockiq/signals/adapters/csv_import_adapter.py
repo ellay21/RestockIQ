@@ -18,6 +18,7 @@ The raw_input accepted by `build_signal` is a dict with:
         "captured_at": str | None,           # optional ISO 8601
     }
 """
+
 from __future__ import annotations
 
 import csv

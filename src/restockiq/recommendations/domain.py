@@ -6,6 +6,7 @@ score → rationale → RestockRecommendation.
 
 Hexagonal rigor: FULL — no framework imports. Zero I/O.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -113,4 +114,5 @@ class RestockRecommendation:
         Frozen dataclass: acceptance creates a new object rather than mutating.
         """
         from dataclasses import replace
+
         return replace(self, is_accepted=True)

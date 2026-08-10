@@ -8,6 +8,7 @@ This test exercises the full pipeline against a real Postgres database:
 
 Marked @pytest.mark.integration — requires Postgres.
 """
+
 from __future__ import annotations
 
 import os
@@ -41,9 +42,6 @@ pytestmark = [
 ]
 
 
-
-
-
 @pytest_asyncio.fixture(scope="session")
 async def engine():
     eng = make_engine(DATABASE_URL, echo=False)
@@ -57,6 +55,7 @@ async def create_tables(engine):
         import restockiq.merchants.orm_models
         import restockiq.recommendations.orm_models
         import restockiq.signals.orm_models  # noqa: F401
+
         await conn.run_sync(Base.metadata.create_all)
     yield
     async with engine.begin() as conn:
@@ -76,9 +75,7 @@ class TestFullPipeline:
 
         async with factory() as session:
             # Step 1: Register merchant
-            merchant_service = MerchantService(
-                repository=PostgresMerchantRepository(session)
-            )
+            merchant_service = MerchantService(repository=PostgresMerchantRepository(session))
             merchant_id = MerchantId.generate()
             await merchant_service.register_merchant(merchant_id, "Integration Shop", "ETB")
             await merchant_service.add_sku(

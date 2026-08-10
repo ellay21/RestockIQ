@@ -4,6 +4,7 @@ BenchmarkService - computes cross-merchant performance metrics.
 Provides anonymised aggregate baselines to help merchants understand
 if they are under-performing their peers on specific SKUs.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -19,6 +20,7 @@ if TYPE_CHECKING:
 @dataclass(frozen=True)
 class SkuBenchmark:
     """Comparison of a merchant's velocity against their peers."""
+
     sku_code: SkuCode
     target_merchant_daily_velocity: float
     peer_average_daily_velocity: float

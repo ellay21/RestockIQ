@@ -8,6 +8,7 @@ by the Architecture.md §3 domain-isolation rule.
 
 Hexagonal rigor: FULL — pure domain, zero I/O, no adapters needed at all.
 """
+
 from __future__ import annotations
 
 import math

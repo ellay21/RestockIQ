@@ -1,6 +1,7 @@
 """
 PostgresSignalRepository — async SQLAlchemy implementation of SignalRepository.
 """
+
 from __future__ import annotations
 
 import uuid

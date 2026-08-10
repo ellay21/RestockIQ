@@ -5,6 +5,7 @@ All request/response schemas are defined here as Pydantic models.
 Domain types are never exposed directly in HTTP responses - they are
 mapped to these response schemas by the endpoint handlers.
 """
+
 from __future__ import annotations
 
 import uuid
@@ -25,6 +26,7 @@ router = APIRouter(tags=["Merchants"])
 
 
 # Schemas
+
 
 class SkuSchema(BaseModel):
     code: str

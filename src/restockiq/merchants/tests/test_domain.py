@@ -4,6 +4,7 @@ Merchant & SKU Catalog domain unit tests.
 Tests are pure: no I/O, no database, no HTTP.  Every invariant defined in
 merchants/domain.py has a corresponding test here.
 """
+
 from __future__ import annotations
 
 from decimal import Decimal
@@ -43,6 +44,7 @@ def oil_sku() -> Sku:
 
 
 # Sku invariants
+
 
 class TestSkuInvariants:
     def test_cannot_add_sku_with_sell_price_below_cost_price(self) -> None:
@@ -106,30 +108,22 @@ class TestSkuInvariants:
 
 
 class TestMerchantCatalog:
-    def test_catalog_lookup_by_sku_code(
-        self, merchant: Merchant, sugar_sku: Sku
-    ) -> None:
+    def test_catalog_lookup_by_sku_code(self, merchant: Merchant, sugar_sku: Sku) -> None:
         merchant.add_sku(sugar_sku)
         found = merchant.get_sku(SkuCode("SUGAR-1KG"))
         assert found.name == "Sugar 1kg"
 
-    def test_catalog_lookup_case_insensitive_code(
-        self, merchant: Merchant, sugar_sku: Sku
-    ) -> None:
+    def test_catalog_lookup_case_insensitive_code(self, merchant: Merchant, sugar_sku: Sku) -> None:
         merchant.add_sku(sugar_sku)
         # SkuCode normalises to uppercase, so lowercase lookup should match
         found = merchant.get_sku(SkuCode("sugar-1kg"))
         assert found.code == SkuCode("SUGAR-1KG")
 
-    def test_catalog_lookup_missing_sku_raises_not_found(
-        self, merchant: Merchant
-    ) -> None:
+    def test_catalog_lookup_missing_sku_raises_not_found(self, merchant: Merchant) -> None:
         with pytest.raises(NotFoundError):
             merchant.get_sku(SkuCode("NONEXISTENT"))
 
-    def test_duplicate_sku_raises_conflict(
-        self, merchant: Merchant, sugar_sku: Sku
-    ) -> None:
+    def test_duplicate_sku_raises_conflict(self, merchant: Merchant, sugar_sku: Sku) -> None:
         merchant.add_sku(sugar_sku)
         with pytest.raises(ConflictError):
             merchant.add_sku(sugar_sku)
@@ -144,22 +138,16 @@ class TestMerchantCatalog:
         assert SkuCode("SUGAR-1KG") in codes
         assert SkuCode("OIL-1L") in codes
 
-    def test_remove_sku_reduces_count(
-        self, merchant: Merchant, sugar_sku: Sku
-    ) -> None:
+    def test_remove_sku_reduces_count(self, merchant: Merchant, sugar_sku: Sku) -> None:
         merchant.add_sku(sugar_sku)
         merchant.remove_sku(SkuCode("SUGAR-1KG"))
         assert merchant.sku_count == 0
 
-    def test_remove_nonexistent_sku_raises_not_found(
-        self, merchant: Merchant
-    ) -> None:
+    def test_remove_nonexistent_sku_raises_not_found(self, merchant: Merchant) -> None:
         with pytest.raises(NotFoundError):
             merchant.remove_sku(SkuCode("GHOST"))
 
-    def test_update_sku_replaces_existing(
-        self, merchant: Merchant, sugar_sku: Sku
-    ) -> None:
+    def test_update_sku_replaces_existing(self, merchant: Merchant, sugar_sku: Sku) -> None:
         merchant.add_sku(sugar_sku)
         updated = Sku(
             code=SkuCode("SUGAR-1KG"),

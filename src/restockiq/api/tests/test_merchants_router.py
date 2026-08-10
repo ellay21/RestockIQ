@@ -3,6 +3,7 @@ Merchants router API tests.
 Uses FastAPI TestClient with in-memory fakes (see tests/conftest.py).
 No database, no HTTP to external services.
 """
+
 from __future__ import annotations
 
 import uuid

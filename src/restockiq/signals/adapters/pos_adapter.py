@@ -5,6 +5,7 @@ This adapter is intentionally left unimplemented in the MVP.  It is a
 placeholder documenting where a POS system integration would live so that
 the architecture remains open for extension without modification.
 """
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING

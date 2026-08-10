@@ -4,6 +4,7 @@ Application configuration via pydantic-settings.
 Reads from environment variables (and optionally a .env file).
 All configuration is centralised here — no other module should read env vars directly.
 """
+
 from __future__ import annotations
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -25,9 +26,7 @@ class Settings(BaseSettings):
     )
 
     # ── Database ──────────────────────────────────────────────────────────────
-    database_url: str = (
-        "postgresql+asyncpg://restockiq:password@localhost:5432/restockiq"
-    )
+    database_url: str = "postgresql+asyncpg://restockiq:password@localhost:5432/restockiq"
 
     # ── WERET Integration ─────────────────────────────────────────────────────
     weret_base_url: str = "http://localhost:3000"

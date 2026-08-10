@@ -5,6 +5,7 @@ SaaSolver tests. The highest-value, highest-risk tests in the project.
   - is adversarial (property-style: tries to break the cash-cap invariant).
 
 """
+
 from __future__ import annotations
 
 from decimal import Decimal
@@ -25,6 +26,7 @@ if TYPE_CHECKING:
     from restockiq.optimizer.ports import SolverPort
 
 # Fixtures
+
 
 @pytest.fixture
 def solver() -> SaaSolver:
@@ -57,6 +59,7 @@ def make_input(
 
 # Core correctness tests
 
+
 class TestSaaSolverCorrectness:
     def test_recommends_zero_order_when_cash_is_zero(self, solver: SaaSolver) -> None:
         """With zero cash, the only valid plan is to order nothing."""
@@ -74,6 +77,7 @@ class TestSaaSolverCorrectness:
         The cash-cap invariant must hold without exception.
         """
         import random
+
         rng = random.Random(0)
         for _ in range(20):  # 20 random scenarios
             cash = Decimal(str(rng.uniform(10, 500)))
@@ -124,33 +128,39 @@ class TestSaaSolverCorrectness:
         problem = make_input(
             cash="10",
             skus=[
-                ("CHEAP",  "10", "13", 2.0),   # margin 3 ETB
-                ("PRICEY", "10", "18", 2.0),   # margin 8 ETB
+                ("CHEAP", "10", "13", 2.0),  # margin 3 ETB
+                ("PRICEY", "10", "18", 2.0),  # margin 8 ETB
             ],
             n_scenarios=100,
         )
         result = solver.solve(problem)
         lines_by_code = {line.sku_code.code: line for line in result.order_plan.lines}
-        pricey_units = lines_by_code.get("PRICEY", SkuOrderLine(
-            sku_code=SkuCode("PRICEY"), units_to_order=0,
-            cost_per_unit=Money(Decimal("10"), "ETB"),
-            sell_price_per_unit=Money(Decimal("18"), "ETB"),
-            expected_units_sold=0.0,
-        )).units_to_order
-        cheap_units = lines_by_code.get("CHEAP", SkuOrderLine(
-            sku_code=SkuCode("CHEAP"), units_to_order=0,
-            cost_per_unit=Money(Decimal("10"), "ETB"),
-            sell_price_per_unit=Money(Decimal("13"), "ETB"),
-            expected_units_sold=0.0,
-        )).units_to_order
+        pricey_units = lines_by_code.get(
+            "PRICEY",
+            SkuOrderLine(
+                sku_code=SkuCode("PRICEY"),
+                units_to_order=0,
+                cost_per_unit=Money(Decimal("10"), "ETB"),
+                sell_price_per_unit=Money(Decimal("18"), "ETB"),
+                expected_units_sold=0.0,
+            ),
+        ).units_to_order
+        cheap_units = lines_by_code.get(
+            "CHEAP",
+            SkuOrderLine(
+                sku_code=SkuCode("CHEAP"),
+                units_to_order=0,
+                cost_per_unit=Money(Decimal("10"), "ETB"),
+                sell_price_per_unit=Money(Decimal("13"), "ETB"),
+                expected_units_sold=0.0,
+            ),
+        ).units_to_order
         assert pricey_units >= cheap_units, (
             f"Solver should prefer PRICEY (margin=8) over CHEAP (margin=3). "
             f"Got PRICEY={pricey_units}, CHEAP={cheap_units}"
         )
 
-    def test_matches_known_analytical_solution_for_single_sku_case(
-        self, solver: SaaSolver
-    ) -> None:
+    def test_matches_known_analytical_solution_for_single_sku_case(self, solver: SaaSolver) -> None:
         """
         Hand-computed newsvendor benchmark.
 
@@ -186,6 +196,7 @@ class TestSaaSolverCorrectness:
 
 
 # Port swappability test
+
 
 class TestSolverPortSwappability:
     def test_solver_port_is_swappable(self) -> None:

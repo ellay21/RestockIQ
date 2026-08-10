@@ -3,6 +3,7 @@ The estimator is a pure function: same input, same output; no I/O whatsoever.
 If any test here requires a mock, a database, or an HTTP call, something
 has gone wrong with the module boundary.
 """
+
 from __future__ import annotations
 
 import pytest
@@ -71,6 +72,7 @@ class TestEstimator:
         """For a Poisson distribution, std = sqrt(lambda)."""
         dist = estimate(sku_code=sku, sales_records=regular_history)
         import math
+
         expected_std = math.sqrt(dist.mean_daily)
         assert abs(dist.std_daily - expected_std) < 1e-6
 

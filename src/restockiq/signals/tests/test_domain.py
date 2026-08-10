@@ -4,6 +4,7 @@ Signal domain unit tests.
 Tests MerchantFinancialSignal and SkuSalesRecord invariants.
 Pure: no I/O, no mocks.
 """
+
 from __future__ import annotations
 
 from datetime import UTC, datetime

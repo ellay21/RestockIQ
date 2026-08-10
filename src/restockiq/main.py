@@ -7,6 +7,7 @@ Defines:
   - Route registration
   - Global exception handlers
 """
+
 from __future__ import annotations
 
 import logging
@@ -96,9 +97,7 @@ async def conflict_handler(request: Request, exc: ConflictError) -> JSONResponse
 
 
 @app.exception_handler(DomainValidationError)
-async def domain_validation_handler(
-    request: Request, exc: DomainValidationError
-) -> JSONResponse:
+async def domain_validation_handler(request: Request, exc: DomainValidationError) -> JSONResponse:
     return JSONResponse(
         status_code=422,
         content={"detail": str(exc), "type": "domain_validation_error"},

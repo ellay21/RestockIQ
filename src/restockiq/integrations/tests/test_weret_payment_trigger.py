@@ -1,6 +1,7 @@
 """
 WeretPaymentTrigger tests using httpx mock transport.
 """
+
 from __future__ import annotations
 
 from decimal import Decimal
@@ -53,9 +54,7 @@ class TestWeretPaymentTrigger:
 
         def mock_post(url: str, json: dict, headers: dict, timeout: float):
             captured_headers.append(headers)
-            return httpx.Response(
-                200, json={"transaction_id": "txn-xyz"}, request=_DUMMY_REQUEST
-            )
+            return httpx.Response(200, json={"transaction_id": "txn-xyz"}, request=_DUMMY_REQUEST)
 
         patch_target = "restockiq.integrations.weret_payment_trigger.httpx.post"
         with patch(patch_target, side_effect=mock_post):
@@ -75,9 +74,7 @@ class TestWeretPaymentTrigger:
 
         def mock_post(url: str, json: dict, headers: dict, timeout: float):
             keys.append(headers["Idempotency-Key"])
-            return httpx.Response(
-                200, json={"transaction_id": "txn"}, request=_DUMMY_REQUEST
-            )
+            return httpx.Response(200, json={"transaction_id": "txn"}, request=_DUMMY_REQUEST)
 
         patch_target = "restockiq.integrations.weret_payment_trigger.httpx.post"
         with patch(patch_target, side_effect=mock_post):
@@ -94,9 +91,7 @@ class TestWeretPaymentTrigger:
 
         patch_target = "restockiq.integrations.weret_payment_trigger.httpx.post"
         with patch(patch_target, side_effect=mock_post), pytest.raises(ExternalServiceError):
-            trigger.trigger_payment(
-                merchant_id, Money(Decimal("100"), "ETB"), "ref-fail"
-            )
+            trigger.trigger_payment(merchant_id, Money(Decimal("100"), "ETB"), "ref-fail")
 
     def test_payment_trigger_is_a_payment_port(self, trigger: WeretPaymentTrigger) -> None:
         assert isinstance(trigger, PaymentTriggerPort)

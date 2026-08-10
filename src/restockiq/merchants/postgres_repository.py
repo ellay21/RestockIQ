@@ -4,6 +4,7 @@ PostgresMerchantRepository - async SQLAlchemy implementation of MerchantReposito
 This module is an adapter (driven side). It may import SQLAlchemy, but must
 never be imported from domain.py or service.py.
 """
+
 from __future__ import annotations
 
 import uuid

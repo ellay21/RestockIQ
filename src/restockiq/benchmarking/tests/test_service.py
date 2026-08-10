@@ -3,6 +3,7 @@ Cross-merchant benchmarking service tests.
 Tests that a merchant's own data is strictly excluded from their baseline
 to prevent data leakage.
 """
+
 from __future__ import annotations
 
 from datetime import UTC, datetime
@@ -71,9 +72,7 @@ class TestBenchmarkService:
         assert benchmark.percentile_rank is not None
         assert benchmark.percentile_rank < 50.0  # They are below average
 
-    def test_benchmark_handles_empty_peer_group(
-        self, merchant_a: MerchantId
-    ) -> None:
+    def test_benchmark_handles_empty_peer_group(self, merchant_a: MerchantId) -> None:
         """If there are no other merchants selling this SKU, return a neutral benchmark."""
         sig_a = make_signal(merchant_a, "SUGAR", 70, 7)
 

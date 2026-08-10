@@ -4,6 +4,7 @@ WeretPaymentTrigger — initiates supplier payments via WERET Pay.
 Architecture: driven adapter — not importable from domain or ports.
 Uses httpx + tenacity with idempotency key to prevent duplicate payments.
 """
+
 from __future__ import annotations
 
 import logging

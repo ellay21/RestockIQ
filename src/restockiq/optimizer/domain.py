@@ -6,6 +6,7 @@ The PuLP solver library appears only in saa_solver.py (the adapter side).
 
 Hexagonal rigor: FULL — domain entities only, no solver library imports.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -89,8 +90,7 @@ class OptimizationInput:
             raise DomainValidationError("OptimizationInput must have at least one SkuInputLine")
         if self.n_scenarios < 10:
             raise DomainValidationError(
-                f"n_scenarios must be at least 10 for reliable SAA results, "
-                f"got {self.n_scenarios}"
+                f"n_scenarios must be at least 10 for reliable SAA results, got {self.n_scenarios}"
             )
         for line in self.sku_lines:
             if line.currency != self.cash_cap.currency:
@@ -110,7 +110,7 @@ class SkuOrderLine:
     """
 
     sku_code: SkuCode
-    units_to_order: int       # 0 = do not order this cycle
+    units_to_order: int  # 0 = do not order this cycle
     cost_per_unit: Money
     sell_price_per_unit: Money
     expected_units_sold: float  # Expected realised sales from SAA scenarios

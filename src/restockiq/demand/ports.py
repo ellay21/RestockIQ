@@ -7,6 +7,7 @@ about the full signal structure or mutation capabilities.
 
 Hexagonal rigor: FULL — no I/O or adapter imports.
 """
+
 from __future__ import annotations
 
 import abc

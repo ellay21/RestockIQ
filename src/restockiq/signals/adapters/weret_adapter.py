@@ -21,6 +21,7 @@ Expected webhook payload (JSON):
     }
 "WERET sends a webhook if connected; otherwise the merchant enters data manually."
 """
+
 from __future__ import annotations
 
 import hashlib
@@ -109,10 +110,11 @@ class WeretAdapter(SignalSourcePort):
                 field="signature",
             )
         import json
+
         body_bytes = json.dumps(payload, separators=(",", ":"), sort_keys=True).encode()
-        expected = "sha256=" + hmac.new(
-            self._secret.encode(), body_bytes, hashlib.sha256
-        ).hexdigest()
+        expected = (
+            "sha256=" + hmac.new(self._secret.encode(), body_bytes, hashlib.sha256).hexdigest()
+        )
         if not hmac.compare_digest(expected, signature):
             raise AdapterError(
                 SOURCE,

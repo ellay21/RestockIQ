@@ -4,6 +4,7 @@ Merchant and Sku domain entities with catalog invariants.
 Hexagonal rigor: LIGHT — one repository port, otherwise pragmatic CRUD.
 No imports from outer layers (adapters, ORM, FastAPI) are permitted here.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
@@ -25,8 +26,8 @@ class Sku:
 
     code: SkuCode
     name: str
-    cost_price: Money   # What the merchant pays per unit to restock
-    sell_price: Money   # What the merchant charges customers per unit
+    cost_price: Money  # What the merchant pays per unit to restock
+    sell_price: Money  # What the merchant charges customers per unit
     reorder_point: Quantity | None = None  # Optional minimum stock level
 
     def __post_init__(self) -> None:
@@ -81,8 +82,7 @@ class Merchant:
             raise DomainValidationError("Merchant name cannot be empty or whitespace")
         if len(self.currency) != 3 or not self.currency.isalpha():
             raise DomainValidationError(
-                f"Merchant currency must be a 3-letter ISO 4217 code, "
-                f"got {self.currency!r}"
+                f"Merchant currency must be a 3-letter ISO 4217 code, got {self.currency!r}"
             )
         object.__setattr__(self, "currency", self.currency.upper())
 

@@ -5,6 +5,7 @@ Hexagonal rigor: FULL — no concrete solver library (PuLP, OR-Tools) may
 appear in this file.  The actual PuLP-based implementation lives in
 saa_solver.py and is wired in via the composition root (container.py).
 """
+
 from __future__ import annotations
 
 import abc

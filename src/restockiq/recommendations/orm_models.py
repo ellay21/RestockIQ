@@ -3,6 +3,7 @@ SQLAlchemy ORM models for the recommendations module.
 
 Adapter layer only — never imported from domain.py, service.py, or ports.py.
 """
+
 from __future__ import annotations
 
 import uuid
